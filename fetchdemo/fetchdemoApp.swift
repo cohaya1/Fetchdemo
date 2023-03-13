@@ -11,7 +11,7 @@ import SwiftUI
 struct fetchdemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+           HomePage()
         }
     }
 }

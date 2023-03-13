@@ -9,28 +9,85 @@ import XCTest
 @testable import fetchdemo
 
 final class fetchdemoTests: XCTestCase {
+    var sut: FetchListFetcher!
+    
+        var mockService: MockFetchAPI!
 
-    override func setUpWithError() throws {
+    @MainActor override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+                mockService = MockFetchAPI()
+                sut = FetchListFetcher(service: mockService)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+                sut = nil
+                mockService = nil
+                   super.tearDown()
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+    
+    func testGetAllMeals_Success() async  {
+        // Given
+        let expectedDessertLists = DessertLists()
+        mockService.expectedDessertLists = expectedDessertLists
+        mockService.shouldReturnError = false
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        // When
+        await sut.getAllMeals()
+
+        // Then
+        // Then
+ let result = await MainActor.run { sut.meal }
+     XCTAssertEqual(result, expectedDessertLists)
+        
+        
+
+    }
+  
+
+   
+
+     func testGetAllRecipe_Success() async  {
+        // Given
+        let expectedRecipeMeals = RecipeMeals()
+        mockService.expectedRecipeMeals = expectedRecipeMeals
+        mockService.shouldReturnError = false
+
+                // When
+                await sut.getRecipes()
+
+                // Then
+         let result = await MainActor.run { sut.instructions }
+             XCTAssertEqual(result, expectedRecipeMeals)
+    }
+}
+final class MockFetchAPI: FetchAPI {
+    
+    var shouldReturnError = false
+    var expectedDessertLists: DessertLists?
+    var expectedRecipeMeals: RecipeMeals?
+    
+    func getAllDessertsService() async throws -> DessertLists {
+            if let expectedDessertLists = expectedDessertLists {
+                return expectedDessertLists
+            } else if shouldReturnError {
+                throw StatusCodes.failure.localizedDescription
+            } else {
+                fatalError("Expected dessert lists not set")
+            }
+        }
+    
+    func getRecipesService() async throws -> RecipeMeals {
+        if let expectedRecipeMeals = expectedRecipeMeals {
+            return expectedRecipeMeals
+        } else {
+            throw StatusCodes.failure.localizedDescription
         }
     }
-
+    
+    func handleNoInternetConnection() {
+        print("No internet connection.")
+    }
 }
