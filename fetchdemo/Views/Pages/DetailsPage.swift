@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailsPage: View {
-    @State private var meal: MealDetail?
+    @State private var meal: RecipeMealsDetailsResponse?
         @State private var ingredients: [Ingredient] = []
         let mealID: Int
         
@@ -22,11 +22,12 @@ struct DetailsPage: View {
                     Text("Instructions")
                         .font(.system(size: 24))
                         .padding(.bottom)
-                    
-                    Text(meal.instructions)
-                        .font(.system(size: 18))
-                        .padding(.bottom)
-                    
+                    ScrollView {
+                        Text(meal.instructions)
+                            .font(.system(size: 18))
+                            .padding(.bottom)
+                            .multilineTextAlignment(.center)
+                    }
                     Text("Ingredients")
                         .font(.system(size: 24))
                         .padding(.bottom)

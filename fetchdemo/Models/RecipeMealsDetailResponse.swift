@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MealDetail {
+struct RecipeMealsDetailsResponse {
     let name: String
     let instructions: String
     let ingredients: [Ingredient]

@@ -11,7 +11,7 @@ import Foundation
 struct UrlComposer {
     var session: URLSession
     
-    // I'm using dependency injection to allow for testability
+    // uses dependency injection to allow for testability and modularity
     init(with session: URLSession = URLSession.shared) {
         self.session = session
     }
@@ -19,7 +19,7 @@ struct UrlComposer {
     func makeRequest<T: Codable>(at url: URL) async throws -> T {
         let (data, _) = try await session.data(from: url)
         
-        // You can check the response and error here if needed
+        // custom request
         do {
             let responseObject = try JSONDecoder().decode(T.self, from: data)
             return responseObject

@@ -26,7 +26,7 @@ final class fetchdemoTests: XCTestCase {
         
         super.tearDown()
     }
-    private func compareExpectedToActualMeals(_ expected: [DessertModel],_ actual: [DessertModel]) {
+     func compareExpectedToActualDesserts(_ expected: [DessertListsModelResponse],_ actual: [DessertListsModelResponse]) {
         XCTAssertEqual(expected.count, actual.count)
         
         //if the number elements are equal, then are they sorted alphabetically?
@@ -39,7 +39,7 @@ final class fetchdemoTests: XCTestCase {
         }
     }
     
-    func testGetAllMeals_Success(_ expected: [DessertModel],_ actual: [DessertModel]) async  {
+    func testGetAllDesserts_Success(_ expected: [DessertListsModelResponse],_ actual: [DessertListsModelResponse]) async  {
         // Given
         XCTAssertEqual(expected.count, actual.count)
         
@@ -54,14 +54,6 @@ final class fetchdemoTests: XCTestCase {
     }
     
     
-//    private func makeRequestToGetActualMeals(_ expectedMeals:[DessertModel]) {
-//        let expectation = expectation(description: "Expectation for meals")
-//        sut.getAllDessertsService(for: .dessert) { actualMeals in
-//            //assert
-//            self.compareExpectedToActualMeals(expectedMeals, actualMeals)
-//            expectation.fulfill()
-//        }
-//        wait(for: [expectation], timeout: 0.1)
-//    }
+
     
 }

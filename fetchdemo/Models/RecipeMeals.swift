@@ -30,7 +30,7 @@ struct Recipe: Codable, Equatable {
     let ingredient14: String
     let ingredient15: String
     
-    //The reason the below 4 ingredients are optional is because JSON response could either be nil or empty string. Same applies to measurements
+    //The reason the below 4 ingredients are optional is because JSON response could either be nil or empty string. Same with the measurements
     let ingredient16: String?
     let ingredient17: String?
     let ingredient18: String?

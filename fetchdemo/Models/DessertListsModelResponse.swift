@@ -7,7 +7,7 @@
 import SwiftUI
 import Foundation
 
-struct DessertModel {
+struct DessertListsModelResponse {
     let name: String
     let image: String 
     let id: Int
