@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MealTableListItem: View {
-    @State var meallists: Meal
-    @ObservedObject var viewModel = FetchListFetcher(service: NetworkManager())
+    @State var meallists: DessertModel
+   
    
     
     var body: some View {
@@ -28,7 +28,7 @@ struct MealTableListItem: View {
                 Circle()
                     .strokeBorder(Color(#colorLiteral(red: 0.949999988079071, green: 0.949999988079071, blue: 0.949999988079071, alpha: 1)), lineWidth: 1)
                 
-                if let url = URL(string: meallists.strMealThumb) {
+                if let url = URL(string: meallists.image) {
                     CacheAsyncImage(url: url) { result in
                         switch result {
                         case .empty:
@@ -59,7 +59,7 @@ struct MealTableListItem: View {
                     .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 4)), radius:4, x:0, y:4)
                     .padding(.bottom,200)
                 VStack(spacing: 25){
-                    Text(meallists.strMeal).font(.system(size: 22, weight: .semibold, design: .rounded)).multilineTextAlignment(.center)
+                    Text(meallists.name).font(.system(size: 22, weight: .semibold, design: .rounded)).multilineTextAlignment(.center)
                         .lineLimit(3)
                         .frame(width: 220, height: 70, alignment: .center)
                         .foregroundColor(Color(.black))
@@ -76,7 +76,7 @@ struct MealTableListItem: View {
 struct MealTableListsItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MealTableListItem(meallists: Meal(strMeal: "Food", strMealThumb: "image", idMeal: "0001"))
+            MealTableListItem(meallists: DessertModel(name: "Food", image: "Unknown", id: 1))
         }
     }
 }

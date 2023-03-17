@@ -7,7 +7,54 @@
 
 import Foundation
 
-enum APIConstants {
-    static let baseUrl = "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert"
-    static let baseUrlLists = "https://themealdb.com/api/json/v1/1/lookup.php?i=52923"
+
+protocol URLComposition {
+    var scheme: String              { get }
+    
+    
+    var host:   String              { get }
+    
+    
+    var path:   String              { get }
+    
+    
+    var queryItems: [URLQueryItem]  { get }
 }
+
+
+
+enum Category: String {
+    case dessert = "Dessert"
+}
+
+enum APIConstants: URLComposition {
+    case getDesserts(category: Category)
+    case getDessertsDetails(id: Int)
+
+    var scheme: String {
+        return "https"
+    }
+    
+    var host: String {
+        return "www.themealdb.com"
+    }
+    
+    var path: String {
+        switch self {
+        case .getDesserts:
+            return "/api/json/v1/1/filter.php"
+        case .getDessertsDetails:
+            return "/api/json/v1/1/lookup.php"
+        }
+    }
+    
+    var queryItems: [URLQueryItem] {
+        switch self {
+        case .getDesserts(let category):
+            return [URLQueryItem(name: "c", value: category.rawValue)]
+        case .getDessertsDetails(id: let id):
+            return [URLQueryItem(name: "i", value: String(id))]
+        }
+    }
+}
+

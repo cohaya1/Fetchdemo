@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct HomePage: View {
-    @State private var searchText = ""
-    @StateObject var viewModel = FetchListFetcher(service: NetworkManager())
+    @State private var desserts: [DessertModel] = []
+       @State private var mealDetail: MealDetail?
+    @StateObject private var viewModel = FetchViewModel()
+
     
     var body: some View {
         NavigationView {
@@ -37,17 +39,20 @@ struct HomePage: View {
                 
                     ScrollView(Axis.Set.horizontal,showsIndicators: false) {
                         LazyHStack(spacing:45){ // pass in restaurant object for view to show up in other view
-                            ForEach(viewModel.meal.sorted { $0.strMeal < $1.strMeal}, id:\.idMeal) { meal in
-                                NavigationLink(destination: DetailsPage(recipe:Recipe( idMeal: meal.idMeal
-                                                                                    )), label: {
-                                MealTableListItem(meallists: meal)
-                            })
+                            ForEach(desserts, id:\.id) { dessert in
+                                NavigationLink(destination: DetailsPage(mealID: dessert.id)) {
+                                    MealTableListItem(meallists: dessert)
+                            }
                                                
                         }
                         }
                         .task {
-                            await  viewModel.getAllMeals()
-                        }
+                                do {
+                                    desserts = try await viewModel.getAllDessertsService(for: .dessert)
+                                } catch {
+                                    print(StatusCodes.failure.localizedDescription)
+                                                    }
+                                                }
                        
                         
                     }.background(Color(#colorLiteral(red: 0.949999988079071, green: 0.949999988079071, blue: 0.949999988079071, alpha: 1)))
